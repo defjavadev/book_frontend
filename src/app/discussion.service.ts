@@ -16,7 +16,7 @@ interface ReplyData {
   providedIn: 'root'
 })
 export class DiscussionService {
-  private apiUrl = 'https://book-backend-uz4g.onrender.com/discussion';
+  private apiUrl = 'https://book-backend-uz4g.onrender.com/api/discussion';
 
   constructor(private http: HttpClient) { }
 

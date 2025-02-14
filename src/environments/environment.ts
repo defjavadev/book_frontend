@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:7700'
+  apiUrl: 'https://book-backend-uz4g.onrender.com'
 };

@@ -9,6 +9,6 @@ export class ChatbotService {
   constructor(private http: HttpClient) { }
 
   getResponse(user:string){
-    return this.http.post<{msg:String | Array<any> }>('http://localhost:7700/api/book/chatbot',{user:user});
+    return this.http.post<{msg:String | Array<any> }>('https://book-backend-uz4g.onrender.com/api/book/chatbot',{user:user});
   }
 }
