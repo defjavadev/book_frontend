@@ -1,0 +1,174 @@
+<div class="container mx-auto px-4 py-8">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center">
+        <img src="assets/loading.gif" alt="Loading..." class="w-16 h-16">
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="showError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        <span class="block sm:inline">{{ errorMessage }}</span>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="showSuccess" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+        <span class="block sm:inline">{{ successMessage }}</span>
+    </div>
+
+    <!-- Profile Section -->
+    <div *ngIf="!loading" class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div class="flex items-center mb-6">
+            <div *ngIf="!userData.image" class="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl font-bold mr-4">
+                {{ shortName() }}
+            </div>
+            <img *ngIf="userData.image" [src]="userData.image" alt="Profile" 
+                 class="w-20 h-20 rounded-full object-cover mr-4"
+                 (error)="handleImageError($event)">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">{{ userData.name }}</h1>
+                <p class="text-gray-600">{{ userData.email }}</p>
+                <p class="text-gray-600">Role: {{ role }}</p>
+            </div>
+            <button (click)="onToggle()" 
+                    class="ml-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                Edit Profile
+            </button>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div *ngIf="update" class="border-t pt-6">
+            <form (ngSubmit)="formSubmit($event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" 
+                           (input)="updateName($event)" 
+                           [value]="updateData.name" 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Profile Image URL</label>
+                    <input type="text" 
+                           (input)="updateImage($event)" 
+                           [value]="updateData.image" 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button type="submit" 
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                    Update Profile
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order History Section (for users) -->
+    <div *ngIf="role === 'user'" class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Order History</h2>
+        
+        <div *ngIf="purchasedBooks && purchasedBooks.length > 0" class="space-y-4">
+            <div *ngFor="let book of purchasedBooks" class="flex items-center bg-gray-50 p-4 rounded-lg">
+                <img [src]="book.imageLink" [alt]="book.title" class="w-20 h-28 object-cover rounded mr-4">
+                <div class="flex-grow">
+                    <h3 class="text-lg font-semibold">{{book.title}}</h3>
+                    <p class="text-gray-600">By {{book.author_name}}</p>
+                    <p class="text-blue-500">₹{{book.price}}</p>
+                    <p class="text-gray-500">{{book.pages}} pages • Published: {{book.published}}</p>
+                </div>
+                <a [routerLink]="['/book', book._id]" 
+                   class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                    View Book
+                </a>
+            </div>
+        </div>
+
+        <div *ngIf="!purchasedBooks || purchasedBooks.length === 0" 
+             class="text-center py-8 text-gray-500">
+            <p>You haven't purchased any books yet.</p>
+            <a routerLink="/books" 
+               class="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                Browse Books
+            </a>
+        </div>
+    </div>
+
+    <!-- Author Books Section (for authors) -->
+    <div *ngIf="role === 'author'" class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-gray-800">Your Published Books</h2>
+            <button (click)="onToggle()" 
+                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                Add New Book
+            </button>
+        </div>
+
+        <!-- Add Book Form -->
+        <div *ngIf="update" class="border-t pt-6 mb-8">
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Book Title</label>
+                    <input type="text" 
+                           (input)="bookTitle($event)" 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Genre</label>
+                    <input type="text" 
+                           (input)="bookGenre($event)" 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea (input)="bookDes($event)" 
+                              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                              rows="3"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Price</label>
+                        <input type="number" 
+                               (input)="bookPrice($event)" 
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Pages</label>
+                        <input type="number" 
+                               (input)="bookPage($event)" 
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Book Cover Image URL</label>
+                    <input type="text" 
+                           (input)="bookImage($event)" 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button (click)="addBook()" 
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                    Add Book
+                </button>
+            </form>
+        </div>
+
+        <!-- Author's Books List -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div *ngFor="let book of authorData" class="bg-gray-50 rounded-lg overflow-hidden">
+                <img [src]="book.imageLink" [alt]="book.title" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">{{book.title}}</h3>
+                    <p class="text-gray-600">Genre: {{book.genre}}</p>
+                    <p class="text-blue-500">₹{{book.price}}</p>
+                    <p class="text-gray-500">{{book.pages}} pages</p>
+                    <p class="text-gray-600 mt-2">{{book.description | slice:0:100}}...</p>
+                    <div class="mt-4 flex justify-between">
+                        <a [routerLink]="['/book', book._id]" 
+                           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                            View
+                        </a>
+                        <button (click)="deleteBook(book._id)" 
+                                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

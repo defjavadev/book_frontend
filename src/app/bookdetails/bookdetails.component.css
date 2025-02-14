@@ -1,0 +1,5 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+.load{
+    filter: hue-rotate(140deg);
+}

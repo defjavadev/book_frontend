@@ -1,0 +1,56 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
+        <div class="flex justify-center mb-8">
+            <img src="../../assets/logo.png" alt="Logo" class="w-32">
+        </div>
+        <h1 class="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">{{current}} Login</h1>
+        
+        <div *ngIf="showError" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            {{ errorMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm" class="space-y-6">
+            <div>
+                <label for="identifier" class="text-sm font-medium text-gray-700 block mb-2">Username/Email</label>
+                <input type="text" 
+                       id="identifier" 
+                       name="identifier"
+                       [(ngModel)]="formData.identifier"
+                       required
+                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                       placeholder="Enter your username or email">
+            </div>
+            
+            <div>
+                <label for="password" class="text-sm font-medium text-gray-700 block mb-2">Password</label>
+                <input type="password" 
+                       id="password" 
+                       name="password"
+                       [(ngModel)]="formData.password"
+                       required
+                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                       placeholder="Enter your password">
+            </div>
+
+            <div>
+                <button type="submit" 
+                        [disabled]="!loginForm.valid || loading"
+                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50">
+                    <span *ngIf="!loading">Login</span>
+                    <span *ngIf="loading">Logging in...</span>
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center">
+            <button (click)="toggleCurrent()" 
+                    class="text-blue-500 hover:text-blue-700 focus:outline-none">
+                Switch to {{ current === 'User' ? 'Author' : 'User' }} Login
+            </button>
+        </div>
+
+        <div class="mt-4 text-center text-sm text-gray-600">
+            <p>Don't have an account? <a routerLink="/signup" class="text-blue-500 hover:text-blue-700">Sign up</a></p>
+        </div>
+    </div>
+</div>
