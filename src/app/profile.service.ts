@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProfileService {
-  private readonly API_URL = 'http://localhost:7700/api';
+  private readonly API_URL = 'https://book-backend-uz4g.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 

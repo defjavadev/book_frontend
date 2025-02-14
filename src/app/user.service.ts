@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:7700';
+  private apiUrl = 'https://book-backend-uz4g.onrender.com';
 
   constructor(private http: HttpClient) { }
 

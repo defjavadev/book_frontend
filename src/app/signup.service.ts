@@ -10,18 +10,18 @@ export class SignupService {
   constructor(private http: HttpClient) { }
 
   checkUsername(username:string){
-    return this.http.post('http://localhost:7700/api/user/usernamecheck',{username})
+    return this.http.post('https://book-backend-uz4g.onrender.com/api/user/usernamecheck',{username})
   }
 
   checkAuthorusername(username:string){
-    return this.http.post('http://localhost:7700/api/author/usernamecheck',{username})
+    return this.http.post('https://book-backend-uz4g.onrender.com/api/author/usernamecheck',{username})
   }
 
   userSignup(data:SignupData){
-    return this.http.post('http://localhost:7700/api/user/signup',data)
+    return this.http.post('https://book-backend-uz4g.onrender.com/api/user/signup',data)
   }
 
   authorSignup(data:SignupData){
-    return this.http.post('http://localhost:7700/api/author/signup',data)
+    return this.http.post('https://book-backend-uz4g.onrender.com/api/author/signup',data)
   }
 }

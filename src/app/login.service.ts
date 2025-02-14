@@ -25,7 +25,7 @@ interface LoginData {
   providedIn: 'root'
 })
 export class LoginService {
-  private readonly API_URL = 'http://localhost:7700/api';
+  private readonly API_URL = 'https://book-backend-uz4g.onrender.com/api';
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 

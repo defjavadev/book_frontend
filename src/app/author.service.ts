@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthorService {
-  private baseUrl = 'http://localhost:7700/api';
+  private baseUrl = 'https://book-backend-uz4g.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
